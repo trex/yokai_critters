@@ -1,16 +1,20 @@
 package;
 
 import flixel.FlxState;
+import flixel.FlxG;
 
 class PlayState extends FlxState
 {
+	private var player:Player;
+
 	override public function create():Void
 	{
+		player = new Player(20, 20);
+		add(player);
+
+		FlxG.mouse.visible = false;
+
 		super.create();
-		
-		var text = new flixel.text.FlxText(0, 0, 0, "Yokai Critters!", 64);
-		text.screenCenter();
-		add(text);
 	}
 
 	override public function update(elapsed:Float):Void
