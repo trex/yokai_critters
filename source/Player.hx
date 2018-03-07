@@ -12,18 +12,15 @@ class Player extends FlxPieDial
 
     public function new(?X:Float=0, ?Y:Float=0)
     {
-        super(0, 0, 40, FlxColor.YELLOW);
+        super(X, Y, 40, FlxColor.YELLOW);
         amount = 0.75;
         antialiasing = true;
 		angle = 135;
-        screenCenter();
-
-        centerOrigin();
     }
 
     override public function update(elapsed:Float):Void
     {
-        FlxSpriteUtil.bound(this);
+        //FlxSpriteUtil.bound(this);
         movement();
         super.update(elapsed);
     }
