@@ -10,9 +10,12 @@ class Player extends FlxSprite
 {
     var speed:Float = 250;
 
-    public function new(color:FlxColor, ?X:Float=0, ?Y:Float=0)
+    public function new(color:FlxColor, ?coord:Point)
     {
-        super(X, Y);
+        if (coord == null) {
+            coord = new Point(0, 0);
+        }
+        super(coord.x, coord.y);
 		
         this.loadGraphic("assets/images/player.png", true, 64, 64, true);
 		this.animation.add("move", [0, 1, 2, 3, 4, 3, 2, 1], 15, true);
