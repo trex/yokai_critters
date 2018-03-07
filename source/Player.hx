@@ -4,23 +4,29 @@ import flixel.util.FlxColor;
 import flixel.FlxG;
 import flixel.FlxObject;
 import flixel.util.FlxSpriteUtil;
-import flixel.addons.display.FlxPieDial;
+import flixel.FlxSprite;
 
-class Player extends FlxPieDial
+class Player extends FlxSprite
 {
-    public var speed:Float = 300;
+    var speed:Float = 250;
 
-    public function new(?X:Float=0, ?Y:Float=0)
+    public function new(color:FlxColor, ?coord:Point)
     {
-        super(X, Y, 40, FlxColor.YELLOW);
-        amount = 0.75;
-        antialiasing = true;
-		angle = 135;
+        if (coord == null) {
+            coord = new Point(0, 0);
+        }
+        super(coord.x, coord.y);
+		
+        this.loadGraphic("assets/images/player.png", true, 64, 64, true);
+		this.animation.add("move", [0, 1, 2, 3, 4, 3, 2, 1], 15, true);
+		this.color = color;
+        this.antialiasing = true;
+        this.centerOrigin();
     }
 
     override public function update(elapsed:Float):Void
     {
-        //FlxSpriteUtil.bound(this);
+        FlxSpriteUtil.screenWrap(this);
         movement();
         super.update(elapsed);
     }
@@ -64,18 +70,18 @@ class Player extends FlxPieDial
 
         if ((velocity.x != 0 || velocity.y != 0) && touching == FlxObject.NONE)
         {
+			this.animation.play("move");
             switch (facing)
             {
-                case FlxObject.LEFT:
-                    angle = 315;
                 case FlxObject.RIGHT:
-                    angle = 135;
-                case FlxObject.UP:
-                    angle = 45;
-                case FlxObject.DOWN:
-                    angle = 225;
+					this.angle = 0;
+				case FlxObject.LEFT:
+					this.angle = 180;
+				case FlxObject.UP:
+					this.angle = 270;
+				case FlxObject.DOWN:
+                    this.angle = 90;
             }
         }
     }
 }
-

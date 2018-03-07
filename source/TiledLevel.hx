@@ -27,6 +27,7 @@ class TiledLevel extends TiledMap
 	public var objectsLayer:FlxGroup;
 	public var backgroundLayer:FlxGroup;
 	private var collidableTileLayers:Array<FlxTilemap>;
+	public var playerStartCoords:Map<String, Point>;
 	
 	public function new(tiledLevel:Dynamic, state:PlayState)
 	{
@@ -117,10 +118,23 @@ class TiledLevel extends TiledMap
 		switch (o.type.toLowerCase())
 		{
 			case "player_start":
-				var player = new Player(x, y);
-				state.player = player;
-				group.add(player);
+				if (playerStartCoords == null) {
+					playerStartCoords = new Map<String, Point>();
+				}
+				playerStartCoords[o.name] = new Point(x, y);
 		}
+	}
+
+	public function playerStartCoordinate(player:String):Point {
+		var coord:Point;
+		var key:String = "start_" + player;
+		if (playerStartCoords.exists(key)) {
+			coord = playerStartCoords[key];
+		} else {
+			trace("Player start with name '" + key + "' not found.");
+			coord = new Point(50, 50);
+		}
+		return coord;
 	}
 	
 	public function collideWithLevel(obj:FlxObject, ?notifyCallback:FlxObject->FlxObject->Void, ?processCallback:FlxObject->FlxObject->Bool):Bool
